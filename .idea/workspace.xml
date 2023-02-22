@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2f398d5-60b0-41ba-bbd2-a005737109ff" name="Changes" comment="пустая строка" />
+    <list default="true" id="b2f398d5-60b0-41ba-bbd2-a005737109ff" name="Changes" comment="JSON-файл">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Receipts.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receipts.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +42,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676993081941</updated>
-      <workItem from="1676993083202" duration="4675000" />
+      <workItem from="1676993083202" duration="6418000" />
     </task>
     <task id="LOCAL-00001" summary="1 дз, JSON файл">
       <created>1677001587230</created>
@@ -55,7 +58,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677001731507</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="JSON-файл">
+      <created>1677001860645</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1677001860645</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -75,6 +85,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1 дз, JSON файл" />
     <MESSAGE value="пустая строка" />
-    <option name="LAST_COMMIT_MESSAGE" value="пустая строка" />
+    <MESSAGE value="JSON-файл" />
+    <option name="LAST_COMMIT_MESSAGE" value="JSON-файл" />
   </component>
 </project>
