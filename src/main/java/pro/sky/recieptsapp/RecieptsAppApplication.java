@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pro.sky.recieptsapp.model.Ingridient;
 import pro.sky.recieptsapp.model.Reciept;
 import pro.sky.recieptsapp.repositories.Repository;
+import pro.sky.recieptsapp.services.IngridientServices;
 import pro.sky.recieptsapp.services.RecieptsServices;
 
 import java.util.ArrayList;
@@ -13,23 +14,29 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class RecieptsAppApplication {
+    public static ArrayList<Ingridient> quickCast(Ingridient[] ingridients) {
+        return (ArrayList<Ingridient>) Arrays.stream(ingridients).collect(Collectors.toList());
+    }
 
     public static void main(String[] args) {
-
         SpringApplication.run(RecieptsAppApplication.class, args);
-Ingridient ingridient1 = new Ingridient(2, "яйца", "шт.");
-        Ingridient ingridient2 = new Ingridient(1, "молоко", "л.");
-        Ingridient ingridient3 = new Ingridient(1, "соль", "по вкусу");
-        Ingridient [] ingridients = new Ingridient[] {ingridient1, ingridient2, ingridient3};
-        String [] jjj = new String[0];
-        ArrayList<Ingridient> arrayList = new ArrayList<>();
-        ArrayList <Ingridient> ing = new ArrayList<>();
-        ing.add(ingridient1);
-        ing.add(ingridient2);
-        ing.add(ingridient3);
-        String [] strings = {"a", "b", "c"};
-        RecieptsServices.createReciept("gdsdd", 23, ing, strings);
-
+        IngridientServices.createIngridient("яйца", 2, "шт.");
+        IngridientServices.createIngridient("молоко", 0.5, "л.");
+        IngridientServices.createIngridient("курица", 200, "гр.");
+        IngridientServices.createIngridient("соль", 1, "по вкусу");
+        Ingridient[] ingridients = new Ingridient[]{Repository.ingridientsMap.get(3), Repository.ingridientsMap.get(4)};
+        ArrayList<Ingridient> ing = new ArrayList<>();
+        ing.add(Repository.ingridientsMap.get(1));
+        ing.add(Repository.ingridientsMap.get(2));
+        ing.add(Repository.ingridientsMap.get(3));
+        String[] strings = {"a", "b", "c"};
+        RecieptsServices.createReciept("пробный рецепт", 23, ing, strings);
+        RecieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть");
+        RecieptsServices.createReciept("пробный рецепт №3", 11, quickCast(ingridients), "Подавиться");
+        System.out.println(Repository.recieptsMap.get(1));
+        System.out.println(Repository.recieptsMap.get(2));
+        System.out.println(Repository.recieptsMap.get(3));
     }
+
 
 }

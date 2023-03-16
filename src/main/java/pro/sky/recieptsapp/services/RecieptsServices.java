@@ -8,6 +8,7 @@ import pro.sky.recieptsapp.repositories.Repository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
 @Service
 public class RecieptsServices {
     public static void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
@@ -15,8 +16,8 @@ public class RecieptsServices {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        Reciept reciept = new Reciept(name, time, list, instructions);
-        Repository.recieptsMap.put(++Repository.count, reciept);
+        Reciept reciept = new Reciept(name, time, list, instructions, ++Repository.rcount);
+        Repository.recieptsMap.put(reciept.getId(), reciept);
     }
 
     public static void createReciept(String name, int time, ArrayList<Ingridient> list, String instruction) {
@@ -25,8 +26,24 @@ public class RecieptsServices {
             return;
         }
         String[] instructions = new String[]{instruction};
-        Reciept reciept = new Reciept(name, time, list, instructions);
-        Repository.recieptsMap.put(++Repository.count, reciept);
+        Reciept reciept = new Reciept(name, time, list, instructions, ++Repository.rcount);
+        Repository.recieptsMap.put(reciept.getId(), reciept);
+    }
+
+    public static void createReciept(String name, int time, int iding, String instruction) {
+        if (name == null || instruction == null) {
+            System.out.println("Все поля рецепта должны быть полностью заполнены");
+            return;
+        }
+        if (Repository.ingridientsMap.get(iding) == null) {
+            System.out.println("Такого ингридиента в списке нет");
+            return;
+        }
+        String[] instructions = new String[]{instruction};
+        ArrayList<Ingridient> ingridients = new ArrayList<>();
+        ingridients.add(Repository.ingridientsMap.get(iding));
+        Reciept reciept = new Reciept(name, time, ingridients, instructions, ++Repository.rcount);
+        Repository.recieptsMap.put(reciept.getId(), reciept);
     }
 
     public static void changeRecieptName(int id, String name) {
@@ -92,6 +109,19 @@ public class RecieptsServices {
         }
     }
 
+    public static void addIngridient(int id, int idIngridient) {
+        if (Repository.ingridientsMap.get(idIngridient) == null) {
+            System.out.println("Такого ингридиента в списке ингридиентов нет");
+            return;
+        }
+        try {
+            Repository.recieptsMap.get(id).getIngridients().add(Repository.ingridientsMap.get(idIngridient));
+        } catch (NullPointerException n) {
+            System.out.println("По такому номеру рецептов нет");
+        }
+    }
+
+
     public static void deleteIngridient(int id, String ingridient) {
         if (ingridient == null) {
             System.out.println("Поле ингридиенты должно быть заполнено");
@@ -114,15 +144,16 @@ public class RecieptsServices {
     }
 
     public static void deleteIngridient(int id, int index) {
-        if (index<=0) {
-            System.out.println("Некорректно задан номер ингридиента") ; return;
+        if (index <= 0) {
+            System.out.println("Некорректно задан номер ингридиента");
+            return;
         }
         if (Repository.recieptsMap.get(id).getIngridients() == null) {
             System.out.println("Список ингридиентов пуст");
             return;
         }
 
-        if (Repository.recieptsMap.get(id).getIngridients().get(index) == null) {
+        if (Repository.recieptsMap.get(id).getIngridients().size() < index) {
             System.out.println("Под таким номером ингридиента нет");
             return;
         }
@@ -180,8 +211,10 @@ public class RecieptsServices {
     }
 
     public static void deleteInstruction(int id, int index) {
-        if (index<=0) {
-            System.out.println("Некорректно задан номер инструкции"); return;}
+        if (index <= 0) {
+            System.out.println("Некорректно задан номер инструкции");
+            return;
+        }
         if (Repository.recieptsMap.get(id) == null) {
             System.out.println("По такому номеру рецептов нет");
             return;
@@ -205,6 +238,19 @@ public class RecieptsServices {
         }
         Repository.recieptsMap.get(id).setInstructions(strings);
     }
-}
+
+    public static String searchReciept(int id) {
+        if (Repository.recieptsMap.get(id) != null) {
+            return Repository.recieptsMap.get(id).toString();
+        } else return "Под таким номером рецепта нет";
+    }
+
+
+
+
+    }
+
+
+
 
 
