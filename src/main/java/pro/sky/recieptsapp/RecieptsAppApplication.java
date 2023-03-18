@@ -36,6 +36,9 @@ public class RecieptsAppApplication {
         System.out.println(Repository.recieptsMap.get(1));
         System.out.println(Repository.recieptsMap.get(2));
         System.out.println(Repository.recieptsMap.get(3));
+
+        Ingridient ingridient =new Ingridient(67, "uuu", "pr");
+
     }
 
 
