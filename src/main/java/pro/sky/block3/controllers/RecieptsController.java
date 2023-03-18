@@ -20,7 +20,8 @@ public class RecieptsController {
 
     @GetMapping("/create")
     public static String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
-        RecieptsServices.createReciept(name, time, id, inst);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.createReciept(name, time, id, inst);
         System.out.println(RecieptsServices.getRecieptsMap().get(id).toString());
         return "Создан рецепт:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -30,7 +31,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        RecieptsServices.changeRecieptName(id, name);
+        RecieptsServices recieptsServices = new RecieptsServices();
+       recieptsServices.changeRecieptName(id, name);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -40,7 +42,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        RecieptsServices.changeRecieptCookingTime(id, time);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.changeRecieptCookingTime(id, time);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -50,7 +53,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        RecieptsServices.addIngridient(id, index);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.addIngridient(id, index);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -60,7 +64,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        RecieptsServices.addInstruction(id, instr);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.addInstruction(id, instr);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -73,7 +78,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id).getIngridients().size() < number) {
             return "Под таким номером ингридиента нет";
         }
-        RecieptsServices.deleteIngridient(id, number);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.deleteIngridient(id, number);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -86,7 +92,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id).getInstructions().length < number) {
             return "Под таким номером инструкции нет";
         }
-        RecieptsServices.deleteInstruction(id, number);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.deleteInstruction(id, number);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -96,8 +103,8 @@ public class RecieptsController {
         if (RecieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-
-        RecieptsServices.searchReciept(id);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        recieptsServices.searchReciept(id);
         System.out.println(RecieptsServices.getRecieptsMap().get(id));
         return "Найден рецепт: " + RecieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -130,16 +137,19 @@ public class RecieptsController {
 
     @GetMapping("/search/ing/1")
     public static String searchByIng1(String s) {
-        return RecieptsServices.searchReciept(s);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        return recieptsServices.searchReciept(s);
     }
 
     @GetMapping("/search/ing/2")
     public static String searchByIng1(String s1, String s2) {
-        return RecieptsServices.searchReciept(s1, s2);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        return recieptsServices.searchReciept(s1, s2);
     }
 
     @GetMapping("/search/ing/3")
     public static String searchByIng3(String s1, String s2, String s3) {
-        return RecieptsServices.searchReciept(s1, s2, s3);
+        RecieptsServices recieptsServices = new RecieptsServices();
+        return recieptsServices.searchReciept(s1, s2, s3);
     }
 }
