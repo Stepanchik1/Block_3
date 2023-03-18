@@ -19,7 +19,8 @@ public class IngridientsController {
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
-        IngridientServices.createIngridient(name, count, unit);
+        IngridientServices ingridientServices = new IngridientServices();
+        ingridientServices.createIngridient(name, count, unit);
         System.out.println(IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()));
         return IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()).toString();
     }
@@ -32,7 +33,8 @@ public class IngridientsController {
         if (IngridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
-        IngridientServices.changeIngridient(id, name, count, unit);
+        IngridientServices ingridientServices = new IngridientServices();
+        ingridientServices.changeIngridient(id, name, count, unit);
         System.out.println(IngridientServices.getIngridientsMap().get(id));
         return "Ингридиент изменен: " + IngridientServices.getIngridientsMap().get(id).toString();
     }
@@ -43,7 +45,8 @@ public class IngridientsController {
             return "Ингридиента по данному id нет";
         }
         Ingridient ingridient = IngridientServices.getIngridientsMap().get(id);
-        IngridientServices.deleteIngridient(id);
+        IngridientServices ingridientServices = new IngridientServices();
+        ingridientServices.deleteIngridient(id);
         System.out.println(ingridient + " = " + IngridientServices.getIngridientsMap().get(id));
         return "Ингридиент удален: " + ingridient;
     }
@@ -53,13 +56,15 @@ public class IngridientsController {
         if (IngridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
-        IngridientServices.searchIngridient(id);
+        IngridientServices ingridientServices = new IngridientServices();
+        ingridientServices.searchIngridient(id);
         return "Найден ингридиент: " + IngridientServices.getIngridientsMap().get(id);
     }
 
     @GetMapping("/search")
     public static String searchIngridient (String string) {
-        return IngridientServices.searchIngridient(string);
+        IngridientServices ingridientServices = new IngridientServices();
+        return ingridientServices.searchIngridient(string);
     }
 
     @GetMapping("/list")

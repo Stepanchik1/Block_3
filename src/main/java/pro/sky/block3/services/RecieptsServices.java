@@ -21,7 +21,7 @@ public class RecieptsServices {
         return recieptsMap;
     }
 
-    public static void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
+    public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
@@ -30,7 +30,7 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public static void createReciept(String name, int time, ArrayList<Ingridient> list, String instruction) {
+    public void createReciept(String name, int time, ArrayList<Ingridient> list, String instruction) {
         if (name == null || list == null || instruction == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
@@ -40,7 +40,7 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public static void createReciept(String name, int time, int iding, String instruction) {
+    public void createReciept(String name, int time, int iding, String instruction) {
         if (name == null || instruction == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
@@ -56,7 +56,7 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public static void changeRecieptName(int id, String name) {
+    public void changeRecieptName(int id, String name) {
         if (name == null) {
             System.out.println("Поле имя должно быть заполнено");
             return;
@@ -68,7 +68,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void changeRecieptCookingTime(int id, int time) {
+    public void changeRecieptCookingTime(int id, int time) {
         if (time < 0) {
             System.out.println("Неверно задан формат времени готовки");
             return;
@@ -80,7 +80,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void changeRecieptIngridients(int id, int index, Ingridient ingridient) {
+    public void changeRecieptIngridients(int id, int index, Ingridient ingridient) {
         if (ingridient == null) {
             System.out.println("Поле ингридиенты должно быть заполнено");
             return;
@@ -94,7 +94,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void changeRecieptIngridients(int id, Ingridient[] ingridients) {
+    public void changeRecieptIngridients(int id, Ingridient[] ingridients) {
         if (ingridients == null) {
             System.out.println("Поле ингридиенты должно быть заполнено");
             return;
@@ -107,7 +107,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void addIngridient(int id, Ingridient ingridient) {
+    public void addIngridient(int id, Ingridient ingridient) {
         if (ingridient == null) {
             System.out.println("Поле ингридиенты должно быть заполнено");
             return;
@@ -119,7 +119,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void addIngridient(int id, int idIngridient) {
+    public void addIngridient(int id, int idIngridient) {
         if (IngridientServices.getIngridientsMap().get(idIngridient) == null) {
             System.out.println("Такого ингридиента в списке ингридиентов нет");
             return;
@@ -132,7 +132,7 @@ public class RecieptsServices {
     }
 
 
-    public static void deleteIngridient(int id, String ingridient) {
+    public void deleteIngridient(int id, String ingridient) {
         if (ingridient == null) {
             System.out.println("Поле ингридиенты должно быть заполнено");
             return;
@@ -153,7 +153,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void deleteIngridient(int id, int index) {
+    public void deleteIngridient(int id, int index) {
         if (index <= 0) {
             System.out.println("Некорректно задан номер ингридиента");
             return;
@@ -175,7 +175,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void changeInstructions(int id, String[] instructions) {
+    public void changeInstructions(int id, String[] instructions) {
         if (instructions == null) {
             System.out.println("Поле инструкции должно быть заполнено");
             return;
@@ -187,7 +187,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void addInstruction(int id, int index, String instruction) {
+    public void addInstruction(int id, int index, String instruction) {
         if (instruction == null) {
             System.out.println("Поле инструкция должно быть заполнено");
             return;
@@ -203,7 +203,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void addInstruction(int id, String instruction) {
+    public void addInstruction(int id, String instruction) {
         if (instruction == null) {
             System.out.println("Поле инструкция должно быть заполнено");
             return;
@@ -220,7 +220,7 @@ public class RecieptsServices {
         }
     }
 
-    public static void deleteInstruction(int id, int index) {
+    public void deleteInstruction(int id, int index) {
         if (index <= 0) {
             System.out.println("Некорректно задан номер инструкции");
             return;
@@ -249,13 +249,13 @@ public class RecieptsServices {
         recieptsMap.get(id).setInstructions(strings);
     }
 
-    public static String searchReciept(int id) {
+    public String searchReciept(int id) {
         if (recieptsMap.get(id) != null) {
             return recieptsMap.get(id).toString();
         } else return "Под таким номером рецепта нет";
     }
 
-    public static String searchReciept(String s) {
+    public String searchReciept(String s) {
         if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -274,7 +274,7 @@ public class RecieptsServices {
         return al.toString().replace("{", "").replace("}", "").replace("=", ") ");
     }
 
-    public static String searchReciept(String s1, String s2) {
+    public String searchReciept(String s1, String s2) {
         if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -293,7 +293,7 @@ public class RecieptsServices {
         return al.toString().replace("{", "").replace("}", "").replace("=", ") ");
     }
 
-    public static String searchReciept(String s1, String s2, String s3) {
+    public String searchReciept(String s1, String s2, String s3) {
         if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
