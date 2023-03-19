@@ -21,8 +21,8 @@ public class IngridientsController {
         }
         IngridientServices ingridientServices = new IngridientServices();
         ingridientServices.createIngridient(name, count, unit);
-        System.out.println(IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()));
-        return IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()).toString();
+        System.out.println(RecieptsController.ingridientServices.getIngridientsMap().get(RecieptsController.ingridientServices.getIngridientsMap().size()));
+        return RecieptsController.ingridientServices.getIngridientsMap().get(RecieptsController.ingridientServices.getIngridientsMap().size()).toString();
     }
 
     @GetMapping("/change")
@@ -30,35 +30,35 @@ public class IngridientsController {
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
+        if (RecieptsController.ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         IngridientServices ingridientServices = new IngridientServices();
         ingridientServices.changeIngridient(id, name, count, unit);
-        System.out.println(IngridientServices.getIngridientsMap().get(id));
-        return "Ингридиент изменен: " + IngridientServices.getIngridientsMap().get(id).toString();
+        System.out.println(RecieptsController.ingridientServices.getIngridientsMap().get(id));
+        return "Ингридиент изменен: " + RecieptsController.ingridientServices.getIngridientsMap().get(id).toString();
     }
 
     @GetMapping("/delete")
     public static String deleteIng(int id) {
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
+        if (RecieptsController.ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
-        Ingridient ingridient = IngridientServices.getIngridientsMap().get(id);
+        Ingridient ingridient = RecieptsController.ingridientServices.getIngridientsMap().get(id);
         IngridientServices ingridientServices = new IngridientServices();
         ingridientServices.deleteIngridient(id);
-        System.out.println(ingridient + " = " + IngridientServices.getIngridientsMap().get(id));
+        System.out.println(ingridient + " = " + RecieptsController.ingridientServices.getIngridientsMap().get(id));
         return "Ингридиент удален: " + ingridient;
     }
 
     @GetMapping("/search/id")
     public static String searchIngId(int id) {
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
+        if (RecieptsController.ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         IngridientServices ingridientServices = new IngridientServices();
         ingridientServices.searchIngridient(id);
-        return "Найден ингридиент: " + IngridientServices.getIngridientsMap().get(id);
+        return "Найден ингридиент: " + RecieptsController.ingridientServices.getIngridientsMap().get(id);
     }
 
     @GetMapping("/search")
@@ -69,9 +69,9 @@ public class IngridientsController {
 
     @GetMapping("/list")
     public static String listOfIng() {
-        if (IngridientServices.getIngridientsMap().isEmpty()) {
+        if (RecieptsController.ingridientServices.getIngridientsMap().isEmpty()) {
             return "Ингридиентов нет";
         }
-        return IngridientServices.getIngridientsMap().toString().replace("{", "").replace("}", "").replace("=", ") ");
+        return RecieptsController.ingridientServices.getIngridientsMap().toString().replace("{", "").replace("}", "").replace("=", ") ");
     }
 }

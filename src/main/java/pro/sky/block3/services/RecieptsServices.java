@@ -1,6 +1,7 @@
 package pro.sky.block3.services;
 
 import org.springframework.stereotype.Service;
+import pro.sky.block3.Block3Application;
 import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
 
@@ -15,10 +16,13 @@ public class RecieptsServices {
 
     private static int rcount = 0;
 
-    private static LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
 
-    public static LinkedHashMap<Integer, Reciept> getRecieptsMap() {
+    public LinkedHashMap<Integer, Reciept> getRecieptsMap() {
         return recieptsMap;
+    }
+
+    public RecieptsServices() {
     }
 
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
@@ -40,18 +44,18 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public void createReciept(String name, int time, int iding, String instruction) {
+    public void createReciept(String name, int time, int iding, String instruction, LinkedHashMap <Integer, Ingridient> linkedHashMap) {
         if (name == null || instruction == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        if (IngridientServices.getIngridientsMap().get(iding) == null) {
+        if (linkedHashMap.get(iding) == null) {
             System.out.println("Такого ингридиента в списке нет");
             return;
         }
         String[] instructions = new String[]{instruction};
         ArrayList<Ingridient> ingridients = new ArrayList<>();
-        ingridients.add(IngridientServices.getIngridientsMap().get(iding));
+        ingridients.add(linkedHashMap.get(iding));
         Reciept reciept = new Reciept(name, time, ingridients, instructions, ++rcount);
         recieptsMap.put(reciept.getId(), reciept);
     }
@@ -118,14 +122,13 @@ public class RecieptsServices {
             System.out.println("По такому номеру рецептов нет");
         }
     }
-
-    public void addIngridient(int id, int idIngridient) {
-        if (IngridientServices.getIngridientsMap().get(idIngridient) == null) {
+    public void addIngridient(int id, int idIngridient, LinkedHashMap <Integer, Ingridient> linkedHashMap) {
+        if (linkedHashMap.get(idIngridient) == null) {
             System.out.println("Такого ингридиента в списке ингридиентов нет");
             return;
         }
         try {
-            recieptsMap.get(id).getIngridients().add(IngridientServices.getIngridientsMap().get(idIngridient));
+            recieptsMap.get(id).getIngridients().add(linkedHashMap.get(idIngridient));
         } catch (NullPointerException n) {
             System.out.println("По такому номеру рецептов нет");
         }
@@ -256,14 +259,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s) {
-        if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
+        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= RecieptsServices.getRecieptsMap().size(); i++) {
-            for (Ingridient j : RecieptsServices.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
+            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s.trim().toLowerCase())) {
-                    al.add(RecieptsServices.getRecieptsMap().get(i));
+                    al.add(this.getRecieptsMap().get(i));
                     break;
                 }
             }
@@ -275,14 +278,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2) {
-        if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
+        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= RecieptsServices.getRecieptsMap().size(); i++) {
-            for (Ingridient j : RecieptsServices.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
+            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase())) {
-                    al.add(RecieptsServices.getRecieptsMap().get(i));
+                    al.add(this.getRecieptsMap().get(i));
                     break;
                 }
             }
@@ -294,14 +297,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2, String s3) {
-        if (RecieptsServices.getRecieptsMap() == null || RecieptsServices.getRecieptsMap().isEmpty()) {
+        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= RecieptsServices.getRecieptsMap().size(); i++) {
-            for (Ingridient j : RecieptsServices.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
+            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase())||j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase())||j.getName().trim().toLowerCase().equals(s3.trim().toLowerCase())) {
-                    al.add(RecieptsServices.getRecieptsMap().get(i));
+                    al.add(this.getRecieptsMap().get(i));
                     break;
                 }
             }
