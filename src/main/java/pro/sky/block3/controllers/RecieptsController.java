@@ -18,12 +18,11 @@ import java.util.ArrayList;
 @RequestMapping("/reciepts")
 public class RecieptsController {
 
-   private static RecieptsServices recieptsServices = Block3Application.recieptsServices;
-   static IngridientServices ingridientServices = Block3Application.ingridientServices;
+   private static RecieptsServices recieptsServices = Block3Application.recieptsServices; //Чтоб был список пробных рецептов
 
     @GetMapping("/create")
     public static String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
-        recieptsServices.createReciept(name, time, id, inst, ingridientServices.getIngridientsMap());
+        recieptsServices.createReciept(name, time, id, inst, IngridientsController.getIngridientServices().getIngridientsMap());
         System.out.println(recieptsServices.getRecieptsMap().get(id).toString());
         return "Создан рецепт:\n" + recieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -53,7 +52,7 @@ public class RecieptsController {
         if (recieptsServices.getRecieptsMap().get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        recieptsServices.addIngridient(id, index, ingridientServices.getIngridientsMap());
+        recieptsServices.addIngridient(id, index, IngridientsController.getIngridientServices().getIngridientsMap());
         System.out.println(recieptsServices.getRecieptsMap().get(id));
         return "Рецепт изменен:\n" + recieptsServices.getRecieptsMap().get(id).toString();
     }
@@ -114,7 +113,7 @@ public class RecieptsController {
 
     @GetMapping("/search/ing/id")
     public static String searchByIng(int id) {
-        if (ingridientServices.getIngridientsMap().get(id) == null) {
+        if (IngridientsController.getIngridientServices().getIngridientsMap().get(id) == null) {
             return "По такому id ингридиента нет";
         }
         ArrayList<Reciept> al = new ArrayList<>();

@@ -22,9 +22,6 @@ public class RecieptsServices {
         return recieptsMap;
     }
 
-    public RecieptsServices() {
-    }
-
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
