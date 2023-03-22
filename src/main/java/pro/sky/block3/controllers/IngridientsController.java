@@ -27,7 +27,7 @@ public class IngridientsController {
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
-        this.ingridientServices.createIngridient(name, count, unit);
+        ingridientServices.createIngridient(name, count, unit);
         System.out.println(ingridientServices.getIngridientsMap().get(ingridientServices.getIngridientsMap().size()));
         return ingridientServices.getIngridientsMap().get(ingridientServices.getIngridientsMap().size()).toString();
     }
@@ -37,7 +37,7 @@ public class IngridientsController {
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
-        if (this.ingridientServices.getIngridientsMap().get(id) == null) {
+        if (ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         ingridientServices.changeIngridient(id, name, count, unit);
@@ -47,7 +47,7 @@ public class IngridientsController {
 
     @GetMapping("/delete")
     public String deleteIng(int id) {
-        if (this.ingridientServices.getIngridientsMap().get(id) == null) {
+        if (ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         Ingridient ingridient = ingridientServices.getIngridientsMap().get(id);
@@ -58,7 +58,7 @@ public class IngridientsController {
 
     @GetMapping("/search/id")
     public String searchIngId(int id) {
-        if (this.ingridientServices.getIngridientsMap().get(id) == null) {
+        if (ingridientServices.getIngridientsMap().get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         ingridientServices.searchIngridient(id);
@@ -72,7 +72,7 @@ public class IngridientsController {
 
     @GetMapping("/list")
     public String listOfIng() {
-        if (this.ingridientServices.getIngridientsMap().isEmpty()) {
+        if (ingridientServices.getIngridientsMap().isEmpty()) {
             return "Ингридиентов нет";
         }
         return ingridientServices.getIngridientsMap().toString().replace("{", "").replace("}", "").replace("=", ") ");

@@ -1,9 +1,6 @@
 package pro.sky.block3.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.block3.Block3Application;
 import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
@@ -18,7 +15,7 @@ import java.util.ArrayList;
 @RequestMapping("/reciepts")
 public class RecieptsController {
 
-   private static RecieptsServices recieptsServices = Block3Application.recieptsServices; //Чтоб был список пробных рецептов
+   private final static RecieptsServices recieptsServices = Block3Application.recieptsServices; //Чтоб был список пробных рецептов
 
     @GetMapping("/create")
     public static String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
@@ -112,8 +109,8 @@ public class RecieptsController {
     }
 
     @GetMapping("/search/ing/id")
-    public static String searchByIng(int id, IngridientsController controller) {
-        if (controller.getIngridientServices().getIngridientsMap().get(id) == null) {
+    public static String searchByIng(int id) {
+        if (IngridientsController.getIngridientServices().getIngridientsMap().get(id) == null) {
             return "По такому id ингридиента нет";
         }
         ArrayList<Reciept> al = new ArrayList<>();
