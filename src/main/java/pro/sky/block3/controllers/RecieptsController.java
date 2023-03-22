@@ -112,8 +112,8 @@ public class RecieptsController {
     }
 
     @GetMapping("/search/ing/id")
-    public static String searchByIng(int id) {
-        if (IngridientsController.getIngridientServices().getIngridientsMap().get(id) == null) {
+    public static String searchByIng(int id, IngridientsController controller) {
+        if (controller.getIngridientServices().getIngridientsMap().get(id) == null) {
             return "По такому id ингридиента нет";
         }
         ArrayList<Reciept> al = new ArrayList<>();
