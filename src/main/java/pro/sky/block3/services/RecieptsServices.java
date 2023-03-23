@@ -20,10 +20,6 @@ public class RecieptsServices {
 
     private LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
 
-    public LinkedHashMap<Integer, Reciept> getRecieptsMap() {
-        return recieptsMap;
-    }
-
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
@@ -341,14 +337,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s) {
-        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
+        if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
-            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.recieptsMap.size(); i++) {
+            for (Ingridient j : this.recieptsMap.get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s.trim().toLowerCase())) {
-                    al.add(this.getRecieptsMap().get(i));
+                    al.add(this.recieptsMap.get(i));
                     break;
                 }
             }
@@ -377,14 +373,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2) {
-        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
+        if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
-            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.recieptsMap.size(); i++) {
+            for (Ingridient j : this.recieptsMap.get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase())) {
-                    al.add(this.getRecieptsMap().get(i));
+                    al.add(this.recieptsMap.get(i));
                     break;
                 }
             }
@@ -396,14 +392,14 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2, String s3) {
-        if (this.getRecieptsMap() == null || this.getRecieptsMap().isEmpty()) {
+        if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
         ArrayList<Reciept> al = new ArrayList<>();
-        for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
-            for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
+        for (int i = 1; i <= this.recieptsMap.size(); i++) {
+            for (Ingridient j : this.recieptsMap.get(i).getIngridients()) {
                 if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s3.trim().toLowerCase())) {
-                    al.add(this.getRecieptsMap().get(i));
+                    al.add(this.recieptsMap.get(i));
                     break;
                 }
             }
