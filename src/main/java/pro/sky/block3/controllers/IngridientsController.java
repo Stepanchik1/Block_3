@@ -24,45 +24,22 @@ public class IngridientsController {
 
     @GetMapping("/create")
     public String createIng(String name, double count, String unit) {
-        if (name == null || count == 0 || unit == null) {
-            return "Укажите все поля ингридиента";
-        }
-        ingridientServices.createIngridient(name, count, unit);
-        System.out.println(ingridientServices.getIngridientsMap().get(ingridientServices.getIngridientsMap().size()));
-        return ingridientServices.getIngridientsMap().get(ingridientServices.getIngridientsMap().size()).toString();
+        return ingridientServices.createInController(name, count, unit);
     }
 
     @GetMapping("/change")
     public String changeIng(int id, String name, double count, String unit) {
-        if (name == null || count == 0 || unit == null) {
-            return "Укажите все поля ингридиента";
-        }
-        if (ingridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        ingridientServices.changeIngridient(id, name, count, unit);
-        System.out.println(ingridientServices.getIngridientsMap().get(id));
-        return "Ингридиент изменен: " + ingridientServices.getIngridientsMap().get(id).toString();
+        return ingridientServices.changeInController(id, name, count, unit);
     }
 
     @GetMapping("/delete")
     public String deleteIng(int id) {
-        if (ingridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        Ingridient ingridient = ingridientServices.getIngridientsMap().get(id);
-        ingridientServices.deleteIngridient(id);
-        System.out.println(ingridient + " = " + ingridientServices.getIngridientsMap().get(id));
-        return "Ингридиент удален: " + ingridient;
+        return ingridientServices.deleteInController(id);
     }
 
     @GetMapping("/search/id")
     public String searchIngId(int id) {
-        if (ingridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        ingridientServices.searchIngridient(id);
-        return "Найден ингридиент: " + ingridientServices.getIngridientsMap().get(id);
+        return ingridientServices.searchInController(id);
     }
 
     @GetMapping("/search")
@@ -72,9 +49,6 @@ public class IngridientsController {
 
     @GetMapping("/list")
     public String listOfIng() {
-        if (ingridientServices.getIngridientsMap().isEmpty()) {
-            return "Ингридиентов нет";
-        }
-        return ingridientServices.getIngridientsMap().toString().replace("{", "").replace("}", "").replace("=", ") ");
+        return ingridientServices.list();
     }
 }

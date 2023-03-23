@@ -1,7 +1,9 @@
 package pro.sky.block3.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import pro.sky.block3.Block3Application;
+import pro.sky.block3.controllers.IngridientsController;
 import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
 
@@ -41,7 +43,7 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public void createReciept(String name, int time, int iding, String instruction, LinkedHashMap <Integer, Ingridient> linkedHashMap) {
+    public void createReciept(String name, int time, int iding, String instruction, LinkedHashMap<Integer, Ingridient> linkedHashMap) {
         if (name == null || instruction == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
@@ -57,6 +59,12 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
+    public String createRecieptInController(String name, int time, int id, String inst, LinkedHashMap<Integer, Ingridient> map) {
+        createReciept(name, time, id, inst, map);
+        System.out.println(recieptsMap.get(id).toString());
+        return "Создан рецепт:\n" + recieptsMap.get(recieptsMap.size()).toString();
+    }
+
     public void changeRecieptName(int id, String name) {
         if (name == null) {
             System.out.println("Поле имя должно быть заполнено");
@@ -69,6 +77,16 @@ public class RecieptsServices {
         }
     }
 
+    public String changeNameToController(int id, String name) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        changeRecieptName(id, name);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
+    }
+
+
     public void changeRecieptCookingTime(int id, int time) {
         if (time < 0) {
             System.out.println("Неверно задан формат времени готовки");
@@ -79,6 +97,15 @@ public class RecieptsServices {
         } catch (NullPointerException n) {
             System.out.println("По такому номеру рецептов нет");
         }
+    }
+
+    public String changeTimeToController(int id, int time) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        changeRecieptCookingTime(id, time);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
     public void changeRecieptIngridients(int id, int index, Ingridient ingridient) {
@@ -119,7 +146,8 @@ public class RecieptsServices {
             System.out.println("По такому номеру рецептов нет");
         }
     }
-    public void addIngridient(int id, int idIngridient, LinkedHashMap <Integer, Ingridient> linkedHashMap) {
+
+    public void addIngridient(int id, int idIngridient, LinkedHashMap<Integer, Ingridient> linkedHashMap) {
         if (linkedHashMap.get(idIngridient) == null) {
             System.out.println("Такого ингридиента в списке ингридиентов нет");
             return;
@@ -131,6 +159,14 @@ public class RecieptsServices {
         }
     }
 
+    public String addIngridientToController(int id, int index, LinkedHashMap<Integer, Ingridient> map) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        addIngridient(id, index, map);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
+    }
 
     public void deleteIngridient(int id, String ingridient) {
         if (ingridient == null) {
@@ -173,6 +209,18 @@ public class RecieptsServices {
         } catch (NullPointerException n) {
             System.out.println("По такому номеру рецептов нет");
         }
+    }
+
+    public String deleteIngridientInController(int id, int number) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        if (recieptsMap.get(id).getIngridients().size() < number) {
+            return "Под таким номером ингридиента нет";
+        }
+        deleteIngridient(id, number);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
     public void changeInstructions(int id, String[] instructions) {
@@ -220,6 +268,15 @@ public class RecieptsServices {
         }
     }
 
+    public String addInstructionToController(int id, String instr) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        addInstruction(id, instr);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
+    }
+
     public void deleteInstruction(int id, int index) {
         if (index <= 0) {
             System.out.println("Некорректно задан номер инструкции");
@@ -249,10 +306,38 @@ public class RecieptsServices {
         recieptsMap.get(id).setInstructions(strings);
     }
 
+    public String deleteInstructionInController(int id, int number) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        if (recieptsMap.get(id).getInstructions().length < number) {
+            return "Под таким номером инструкции нет";
+        }
+        deleteInstruction(id, number);
+        System.out.println(recieptsMap.get(id));
+        return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
+    }
+
     public String searchReciept(int id) {
         if (recieptsMap.get(id) != null) {
             return recieptsMap.get(id).toString();
         } else return "Под таким номером рецепта нет";
+    }
+
+    public String searchInController(int id) {
+        if (recieptsMap.get(id) == null) {
+            return "По такому id рецептов не найдено";
+        }
+        searchReciept(id);
+        System.out.println(recieptsMap.get(id));
+        return "Найден рецепт: " + recieptsMap.get(id).toString();
+    }
+
+    public String list() {
+        if (recieptsMap.isEmpty()) {
+            return "Рецептов нет";
+        }
+        return recieptsMap.toString().replace("{", "").replace("}", "").replace("=", ") ");
     }
 
     public String searchReciept(String s) {
@@ -267,6 +352,23 @@ public class RecieptsServices {
                     break;
                 }
             }
+        }
+        if (al.isEmpty()) {
+            return "Рецепты не найдены";
+        }
+        return al.toString().replace("{", "").replace("}", "").replace("=", ") ");
+    }
+
+    public String searchingIngByIdToController(int id, LinkedHashMap<Integer, Ingridient> map) {
+        if (map.get(id) == null) {
+            return "По такому id ингридиента нет";
+        }
+        ArrayList<Reciept> al = new ArrayList<>();
+        for (int i = 1; i <= recieptsMap.size(); i++) {
+            for (Ingridient j : recieptsMap.get(i).getIngridients())
+                if (j.getId() == id) {
+                    al.add(recieptsMap.get(i));
+                }
         }
         if (al.isEmpty()) {
             return "Рецепты не найдены";
@@ -300,7 +402,7 @@ public class RecieptsServices {
         ArrayList<Reciept> al = new ArrayList<>();
         for (int i = 1; i <= this.getRecieptsMap().size(); i++) {
             for (Ingridient j : this.getRecieptsMap().get(i).getIngridients()) {
-                if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase())||j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase())||j.getName().trim().toLowerCase().equals(s3.trim().toLowerCase())) {
+                if (j.getName().trim().toLowerCase().equals(s1.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s2.trim().toLowerCase()) || j.getName().trim().toLowerCase().equals(s3.trim().toLowerCase())) {
                     al.add(this.getRecieptsMap().get(i));
                     break;
                 }

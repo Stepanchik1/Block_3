@@ -23,11 +23,32 @@ public class IngridientServices {
         ingridientsMap.put(ingridient.getId(), ingridient);
     }
 
+    public String createInController(String name, double count, String unit) {
+        if (name == null || count == 0 || unit == null) {
+            return "Укажите все поля ингридиента";
+        }
+        createIngridient(name, count, unit);
+        System.out.println(ingridientsMap.get(ingridientsMap.size()));
+        return ingridientsMap.get(ingridientsMap.size()).toString();
+    }
+
     public void changeIngridient(int id, String name, double count, String unit) {
         if (ingridientsMap.get(id) != null) {
             Ingridient ingridient = new Ingridient(count, name, unit, id);
             ingridientsMap.put(id, ingridient);
         } else System.out.println("Под таким номером ингридиента нет");
+    }
+
+    public String changeInController(int id, String name, double count, String unit) {
+        if (name == null || count == 0 || unit == null) {
+            return "Укажите все поля ингридиента";
+        }
+        if (ingridientsMap.get(id) == null) {
+            return "Ингридиента по данному id нет";
+        }
+        changeIngridient(id, name, count, unit);
+        System.out.println(ingridientsMap.get(id));
+        return "Ингридиент изменен: " + ingridientsMap.get(id).toString();
     }
 
     public void deleteIngridient(int id) {
@@ -38,12 +59,30 @@ public class IngridientServices {
         }
     }
 
+    public String deleteInController(int id) {
+        if (ingridientsMap.get(id) == null) {
+            return "Ингридиента по данному id нет";
+        }
+        Ingridient ingridient = ingridientsMap.get(id);
+        deleteIngridient(id);
+        System.out.println(ingridient + " = " + ingridientsMap.get(id));
+        return "Ингридиент удален: " + ingridient;
+    }
+
     public String searchIngridient(int id) {
         if (ingridientsMap.get(id) != null) {
             return ingridientsMap.get(id).toString();
         } else {
             return "Под таким номером нет ингридиента";
         }
+    }
+
+    public String searchInController(int id) {
+        if (ingridientsMap.get(id) == null) {
+            return "Ингридиента по данному id нет";
+        }
+        searchIngridient(id);
+        return "Найден ингридиент: " + ingridientsMap.get(id);
     }
 
     public String searchIngridient(String string) {
@@ -62,4 +101,12 @@ public class IngridientServices {
             return "Список ингридиентов пуст";
         }
     }
+
+    public String list() {
+        if (ingridientsMap.isEmpty()) {
+            return "Ингридиентов нет";
+        }
+        return ingridientsMap.toString().replace("{", "").replace("}", "").replace("=", ") ");
+    }
+
 }
