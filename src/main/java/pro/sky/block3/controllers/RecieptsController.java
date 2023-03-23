@@ -8,7 +8,10 @@ import pro.sky.block3.services.IngridientServices;
 import pro.sky.block3.services.RecieptsServices;
 
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,6 +25,17 @@ public class RecieptsController {
         this.recieptsServices = recieptsServices;
         this.ingridientServices = ingridientServices;
     }
+
+    @PostConstruct
+    void first() {Ingridient[] ingridients = new Ingridient[]{ingridientServices.getIngridientsMap().get(3), ingridientServices.getIngridientsMap().get(4)};
+        ArrayList<Ingridient> ing = new ArrayList<>();
+        ing.add(ingridientServices.getIngridientsMap().get(1));
+        ing.add(ingridientServices.getIngridientsMap().get(2));
+        ing.add(ingridientServices.getIngridientsMap().get(3));
+        String[] strings = {"a", "b", "c"};
+        recieptsServices.createReciept("пробный рецепт", 23, ing, strings);
+        recieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть", ingridientServices.getIngridientsMap());
+        recieptsServices.createReciept("пробный рецепт №3", 11, quickCast(ingridients), "Подавиться");}
 
     @GetMapping("/create")
     public String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
@@ -87,4 +101,9 @@ public class RecieptsController {
     public String searchByIng3(String s1, String s2, String s3) {
         return recieptsServices.searchReciept(s1, s2, s3);
     }
+
+    public static ArrayList<Ingridient> quickCast(Ingridient[] ingridients) {
+        return (ArrayList<Ingridient>) Arrays.stream(ingridients).collect(Collectors.toList());
+    }
+
 }
