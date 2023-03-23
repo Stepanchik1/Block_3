@@ -16,10 +16,10 @@ import java.util.ArrayList;
 
 public class IngridientsController {
 
-    private static final IngridientServices ingridientServices = Block3Application.ingridientServices; //Чтоб был пробный список ингридиентов
+    private final IngridientServices ingridientServices;
 
-    static IngridientServices getIngridientServices() {
-        return ingridientServices;
+    public IngridientsController(IngridientServices ingridientServices) {
+        this.ingridientServices = ingridientServices;
     }
 
     @GetMapping("/create")

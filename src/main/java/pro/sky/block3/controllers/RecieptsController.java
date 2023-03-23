@@ -15,70 +15,76 @@ import java.util.ArrayList;
 @RequestMapping("/reciepts")
 public class RecieptsController {
 
-    private final static RecieptsServices recieptsServices = Block3Application.recieptsServices; //Чтоб был список пробных рецептов
+    private final RecieptsServices recieptsServices;
+    private final IngridientServices ingridientServices;
+
+    public RecieptsController(RecieptsServices recieptsServices, IngridientServices ingridientServices) {
+        this.recieptsServices = recieptsServices;
+        this.ingridientServices = ingridientServices;
+    }
 
     @GetMapping("/create")
-    public static String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
-        return recieptsServices.createRecieptInController(name, time, id, inst, IngridientsController.getIngridientServices().getIngridientsMap());
+    public String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
+        return recieptsServices.createRecieptInController(name, time, id, inst, ingridientServices.getIngridientsMap());
     }
 
     @GetMapping("/change/name")
-    public static String changeName(@RequestParam int id, @RequestParam String name) {
+    public String changeName(@RequestParam int id, @RequestParam String name) {
         return recieptsServices.changeNameToController(id, name);
     }
 
     @GetMapping("/change/time")
-    public static String changeTime(@RequestParam int id, @RequestParam int time) {
+    public String changeTime(@RequestParam int id, @RequestParam int time) {
         return recieptsServices.changeTimeToController(id, time);
     }
 
     @GetMapping("/add/ingr")
-    public static String addIngridient(@RequestParam int id, @RequestParam int index) {
-        return recieptsServices.addIngridientToController(id, index, IngridientsController.getIngridientServices().getIngridientsMap());
+    public String addIngridient(@RequestParam int id, @RequestParam int index) {
+        return recieptsServices.addIngridientToController(id, index, ingridientServices.getIngridientsMap());
     }
 
     @GetMapping("/add/inst")
-    public static String addInstruction(@RequestParam int id, @RequestParam String instr) {
+    public String addInstruction(@RequestParam int id, @RequestParam String instr) {
         return recieptsServices.addInstructionToController(id, instr);
     }
 
     @GetMapping("/delete/ingr")
-    public static String deleteIngridient(@RequestParam int id, @RequestParam int number) {
+    public String deleteIngridient(@RequestParam int id, @RequestParam int number) {
         return recieptsServices.deleteIngridientInController(id, number);
     }
 
     @GetMapping("/delete/inst")
-    public static String deleteInstruction(@RequestParam int id, @RequestParam int number) {
+    public String deleteInstruction(@RequestParam int id, @RequestParam int number) {
         return recieptsServices.deleteInstructionInController(id, number);
     }
 
     @GetMapping("/search")
-    public static String searchReciept(@RequestParam int id) {
+    public String searchReciept(@RequestParam int id) {
         return recieptsServices.searchInController(id);
     }
 
     @GetMapping("/list")
-    public static String listOfReciepts() {
+    public String listOfReciepts() {
         return recieptsServices.list();
     }
 
     @GetMapping("/search/ing/id")
-    public static String searchByIng(int id) {
-        return recieptsServices.searchingIngByIdToController(id, IngridientsController.getIngridientServices().getIngridientsMap());
+    public String searchByIng(int id) {
+        return recieptsServices.searchingIngByIdToController(id, ingridientServices.getIngridientsMap());
     }
 
     @GetMapping("/search/ing/1")
-    public static String searchByIng1(String s) {
+    public String searchByIng1(String s) {
         return recieptsServices.searchReciept(s);
     }
 
     @GetMapping("/search/ing/2")
-    public static String searchByIng1(String s1, String s2) {
+    public String searchByIng1(String s1, String s2) {
         return recieptsServices.searchReciept(s1, s2);
     }
 
     @GetMapping("/search/ing/3")
-    public static String searchByIng3(String s1, String s2, String s3) {
+    public String searchByIng3(String s1, String s2, String s3) {
         return recieptsServices.searchReciept(s1, s2, s3);
     }
 }
