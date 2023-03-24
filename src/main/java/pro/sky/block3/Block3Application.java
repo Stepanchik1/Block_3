@@ -14,10 +14,6 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 public class Block3Application {
 
-    public static RecieptsServices recieptsServices = new RecieptsServices();
-
-    public static IngridientServices ingridientServices = new IngridientServices();
-
     public static void main(String[] args) {
         SpringApplication.run(Block3Application.class, args);
         System.out.println(123);

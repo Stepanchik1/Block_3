@@ -18,7 +18,13 @@ public class RecieptsServices {
 
     private static int rcount = 0;
 
-    private LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
+    private final LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
+
+    private final IngridientServices ingridientServices;
+
+    public RecieptsServices(IngridientServices ingridientServices) {
+        this.ingridientServices = ingridientServices;
+    }
 
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
@@ -39,24 +45,24 @@ public class RecieptsServices {
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public void createReciept(String name, int time, int iding, String instruction, LinkedHashMap<Integer, Ingridient> linkedHashMap) {
+    public void createReciept(String name, int time, int iding, String instruction) {
         if (name == null || instruction == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        if (linkedHashMap.get(iding) == null) {
+        if (ingridientServices.getIngridientsMap().get(iding) == null) {
             System.out.println("Такого ингридиента в списке нет");
             return;
         }
         String[] instructions = new String[]{instruction};
         ArrayList<Ingridient> ingridients = new ArrayList<>();
-        ingridients.add(linkedHashMap.get(iding));
+        ingridients.add(ingridientServices.getIngridientsMap().get(iding));
         Reciept reciept = new Reciept(name, time, ingridients, instructions, ++rcount);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
-    public String createRecieptInController(String name, int time, int id, String inst, LinkedHashMap<Integer, Ingridient> map) {
-        createReciept(name, time, id, inst, map);
+    public String createRecieptInController(String name, int time, int id, String inst) {
+        createReciept(name, time, id, inst);
         System.out.println(recieptsMap.get(id).toString());
         return "Создан рецепт:\n" + recieptsMap.get(recieptsMap.size()).toString();
     }
@@ -143,23 +149,23 @@ public class RecieptsServices {
         }
     }
 
-    public void addIngridient(int id, int idIngridient, LinkedHashMap<Integer, Ingridient> linkedHashMap) {
-        if (linkedHashMap.get(idIngridient) == null) {
+    public void addIngridient(int id, int idIngridient) {
+        if (ingridientServices.getIngridientsMap().get(idIngridient) == null) {
             System.out.println("Такого ингридиента в списке ингридиентов нет");
             return;
         }
         try {
-            recieptsMap.get(id).getIngridients().add(linkedHashMap.get(idIngridient));
+            recieptsMap.get(id).getIngridients().add(ingridientServices.getIngridientsMap().get(idIngridient));
         } catch (NullPointerException n) {
             System.out.println("По такому номеру рецептов нет");
         }
     }
 
-    public String addIngridientToController(int id, int index, LinkedHashMap<Integer, Ingridient> map) {
+    public String addIngridientToController(int id, int index) {
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
-        addIngridient(id, index, map);
+        addIngridient(id, index);
         System.out.println(recieptsMap.get(id));
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
@@ -355,8 +361,8 @@ public class RecieptsServices {
         return al.toString().replace("{", "").replace("}", "").replace("=", ") ");
     }
 
-    public String searchingIngByIdToController(int id, LinkedHashMap<Integer, Ingridient> map) {
-        if (map.get(id) == null) {
+    public String searchingIngByIdToController(int id) {
+        if (ingridientServices.getIngridientsMap().get(id) == null) {
             return "По такому id ингридиента нет";
         }
         ArrayList<Reciept> al = new ArrayList<>();

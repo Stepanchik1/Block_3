@@ -34,12 +34,12 @@ public class RecieptsController {
         ing.add(ingridientServices.getIngridientsMap().get(3));
         String[] strings = {"a", "b", "c"};
         recieptsServices.createReciept("пробный рецепт", 23, ing, strings);
-        recieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть", ingridientServices.getIngridientsMap());
+        recieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть");
         recieptsServices.createReciept("пробный рецепт №3", 11, quickCast(ingridients), "Подавиться");}
 
     @GetMapping("/create")
     public String newReciept(@RequestParam String name, @RequestParam int time, @RequestParam int id, @RequestParam String inst) {
-        return recieptsServices.createRecieptInController(name, time, id, inst, ingridientServices.getIngridientsMap());
+        return recieptsServices.createRecieptInController(name, time, id, inst);
     }
 
     @GetMapping("/change/name")
@@ -54,7 +54,7 @@ public class RecieptsController {
 
     @GetMapping("/add/ingr")
     public String addIngridient(@RequestParam int id, @RequestParam int index) {
-        return recieptsServices.addIngridientToController(id, index, ingridientServices.getIngridientsMap());
+        return recieptsServices.addIngridientToController(id, index);
     }
 
     @GetMapping("/add/inst")
@@ -84,7 +84,7 @@ public class RecieptsController {
 
     @GetMapping("/search/ing/id")
     public String searchByIng(int id) {
-        return recieptsServices.searchingIngByIdToController(id, ingridientServices.getIngridientsMap());
+        return recieptsServices.searchingIngByIdToController(id);
     }
 
     @GetMapping("/search/ing/1")
