@@ -50,13 +50,13 @@ public class RecieptsServices {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        if (ingridientServices.getIngridientsMap().get(iding) == null) {
+        if (ingridientServices.getIngridient(iding) == null) {
             System.out.println("Такого ингридиента в списке нет");
             return;
         }
         String[] instructions = new String[]{instruction};
         ArrayList<Ingridient> ingridients = new ArrayList<>();
-        ingridients.add(ingridientServices.getIngridientsMap().get(iding));
+        ingridients.add(ingridientServices.getIngridient(iding));
         Reciept reciept = new Reciept(name, time, ingridients, instructions, ++rcount);
         recieptsMap.put(reciept.getId(), reciept);
     }
@@ -150,12 +150,12 @@ public class RecieptsServices {
     }
 
     public void addIngridient(int id, int idIngridient) {
-        if (ingridientServices.getIngridientsMap().get(idIngridient) == null) {
+        if (ingridientServices.getIngridient(idIngridient) == null) {
             System.out.println("Такого ингридиента в списке ингридиентов нет");
             return;
         }
         try {
-            recieptsMap.get(id).getIngridients().add(ingridientServices.getIngridientsMap().get(idIngridient));
+            recieptsMap.get(id).getIngridients().add(ingridientServices.getIngridient(idIngridient));
         } catch (NullPointerException n) {
             System.out.println("По такому номеру рецептов нет");
         }
@@ -362,7 +362,7 @@ public class RecieptsServices {
     }
 
     public String searchingIngByIdToController(int id) {
-        if (ingridientServices.getIngridientsMap().get(id) == null) {
+        if (ingridientServices.getIngridient(id) == null) {
             return "По такому id ингридиента нет";
         }
         ArrayList<Reciept> al = new ArrayList<>();

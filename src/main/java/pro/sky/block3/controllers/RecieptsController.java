@@ -27,11 +27,11 @@ public class RecieptsController {
     }
 
     @PostConstruct
-    void first() {Ingridient[] ingridients = new Ingridient[]{ingridientServices.getIngridientsMap().get(3), ingridientServices.getIngridientsMap().get(4)};
+    void first() {Ingridient[] ingridients = new Ingridient[]{ingridientServices.getIngridient(3), ingridientServices.getIngridient(4)};
         ArrayList<Ingridient> ing = new ArrayList<>();
-        ing.add(ingridientServices.getIngridientsMap().get(1));
-        ing.add(ingridientServices.getIngridientsMap().get(2));
-        ing.add(ingridientServices.getIngridientsMap().get(3));
+        ing.add(ingridientServices.getIngridient(1));
+        ing.add(ingridientServices.getIngridient(2));
+        ing.add(ingridientServices.getIngridient(3));
         String[] strings = {"a", "b", "c"};
         recieptsServices.createReciept("пробный рецепт", 23, ing, strings);
         recieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть");

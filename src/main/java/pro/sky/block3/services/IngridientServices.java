@@ -13,10 +13,6 @@ public class IngridientServices {
 
     private LinkedHashMap<Integer, Ingridient> ingridientsMap = new LinkedHashMap<>();
 
-    public LinkedHashMap<Integer, Ingridient> getIngridientsMap() {
-        return ingridientsMap;
-    }
-
     public void createIngridient(String name, double count, String unit) {
         Ingridient ingridient = new Ingridient(count, name, unit);
         ingridient.setId(++icount);
@@ -76,6 +72,15 @@ public class IngridientServices {
             return "Под таким номером нет ингридиента";
         }
     }
+    public Ingridient getIngridient (int id) {
+        if (ingridientsMap.get(id) != null) {
+            return ingridientsMap.get(id);
+        } else {
+            System.out.println("Под таким id нет ингридиента");
+            return null;
+        }
+    }
+
 
     public String searchInController(int id) {
         if (ingridientsMap.get(id) == null) {
