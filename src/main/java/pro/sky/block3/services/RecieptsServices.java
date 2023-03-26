@@ -63,7 +63,7 @@ public class RecieptsServices {
 
     public String createRecieptInController(String name, int time, int id, String inst) {
         createReciept(name, time, id, inst);
-        System.out.println(recieptsMap.get(id).toString());
+        System.out.println(recieptsMap.get(recieptsMap.size()).toString());
         return "Создан рецепт:\n" + recieptsMap.get(recieptsMap.size()).toString();
     }
 
