@@ -1,8 +1,13 @@
 package pro.sky.block3.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pro.sky.block3.controllers.model.Ingridient;
+import pro.sky.block3.controllers.model.Reciept;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -13,6 +18,12 @@ public class IngridientServices {
 
     private LinkedHashMap<Integer, Ingridient> ingridientsMap = new LinkedHashMap<>();
 
+    private final FileService fileService;
+
+    public IngridientServices(FileService fileService) {
+        this.fileService = fileService;
+    }
+
     public void createIngridient(String name, double count, String unit) {
         Ingridient ingridient = new Ingridient(count, name, unit);
         ingridient.setId(++icount);
@@ -20,11 +31,13 @@ public class IngridientServices {
     }
 
     public String createInController(String name, double count, String unit) {
+        readFromFile();
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
         createIngridient(name, count, unit);
         System.out.println(ingridientsMap.get(ingridientsMap.size()));
+        saveToFile();
         return ingridientsMap.get(ingridientsMap.size()).toString();
     }
 
@@ -36,6 +49,7 @@ public class IngridientServices {
     }
 
     public String changeInController(int id, String name, double count, String unit) {
+        readFromFile();
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
@@ -44,6 +58,7 @@ public class IngridientServices {
         }
         changeIngridient(id, name, count, unit);
         System.out.println(ingridientsMap.get(id));
+        saveToFile();
         return "Ингридиент изменен: " + ingridientsMap.get(id).toString();
     }
 
@@ -56,12 +71,14 @@ public class IngridientServices {
     }
 
     public String deleteInController(int id) {
+        readFromFile();
         if (ingridientsMap.get(id) == null) {
             return "Ингридиента по данному id нет";
         }
         Ingridient ingridient = ingridientsMap.get(id);
         deleteIngridient(id);
         System.out.println(ingridient + " = " + ingridientsMap.get(id));
+        saveToFile();
         return "Ингридиент удален: " + ingridient;
     }
 
@@ -73,6 +90,7 @@ public class IngridientServices {
         }
     }
     public Ingridient getIngridient (int id) {
+        readFromFile();
         if (ingridientsMap.get(id) != null) {
             return ingridientsMap.get(id);
         } else {
@@ -83,6 +101,7 @@ public class IngridientServices {
 
 
     public String searchInController(int id) {
+        readFromFile();
         if (ingridientsMap.get(id) == null) {
             return "Ингридиента по данному id нет";
         }
@@ -108,10 +127,33 @@ public class IngridientServices {
     }
 
     public String list() {
+        readFromFile();
         if (ingridientsMap.isEmpty()) {
             return "Ингридиентов нет";
         }
         return ingridientsMap.toString().replace("{", "").replace("}", "").replace("=", ") ");
+    }
+
+    private void saveToFile() {
+        try {
+            fileService.classType = 0;
+            String string = new ObjectMapper().writeValueAsString(ingridientsMap);
+            boolean b = fileService.saveToFile(string);
+            if (b) {System.out.println("Карта ингридиентов успешно сохранена");}
+            else {
+                System.out.println("Не удалось сохранить карту ингридиентов в файл");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readFromFile() {
+        try {
+            fileService.classType = 0;
+            String string = fileService.readFile();
+            ingridientsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Ingridient>>(){});
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 
 }

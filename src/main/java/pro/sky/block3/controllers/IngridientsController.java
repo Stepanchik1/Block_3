@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.block3.Block3Application;
 import pro.sky.block3.controllers.model.Ingridient;
+import pro.sky.block3.services.FileService;
 import pro.sky.block3.services.IngridientServices;
 import pro.sky.block3.services.RecieptsServices;
 
@@ -24,7 +25,7 @@ public class IngridientsController {
 
     private final IngridientServices ingridientServices;
 
-    public IngridientsController(IngridientServices ingridientServices) {
+    public IngridientsController(IngridientServices ingridientServices, FileService fileService) {
         this.ingridientServices = ingridientServices;
     }
 

@@ -1,14 +1,16 @@
 package pro.sky.block3.services;
 
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
 @Service
+@NoArgsConstructor
 public class FileService {
     @Value("${path.to.files.folder}")
     private String dataFilePath;
@@ -16,12 +18,21 @@ public class FileService {
     @Value("${name.of.data.file}")
     private String dataName;
 
-    private final Path PATH = Path.of(dataFilePath, dataName);
+    @PostConstruct
+    private Path path () {return Path.of(dataFilePath, classType(classType)+dataName);}
+
+    byte classType=0;
+
+private String classType (byte classType) {
+    System.out.println(classType);
+        if (classType == 1) {
+        return "reciepts";} else if (classType == 0){return "ingridients";} else {return "";}
+}
 
     public boolean saveToFile(String json) {
         try {
             cleanFile();
-            Files.writeString(PATH, json);
+            Files.writeString(path(), json);
             return true;
         } catch (IOException e) {
             return false;
@@ -30,14 +41,14 @@ public class FileService {
 
     public String readFile() {
         try {
-            return Files.readString(PATH);
+            return Files.readString(path());
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
     private boolean cleanFile() {
         try {
-            Files.deleteIfExists(PATH);
-            Files.createFile(PATH);
+            Files.deleteIfExists(path());
+            Files.createFile(path());
             return true;
         } catch (IOException e) {
             return false;

@@ -10,6 +10,7 @@ import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
 
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +69,10 @@ public class RecieptsServices {
     }
 
     public String createRecieptInController(String name, int time, int id, String inst) {
+        readFromFile();
         createReciept(name, time, id, inst);
         System.out.println(recieptsMap.get(recieptsMap.size()).toString());
+        saveToFile();
         return "Создан рецепт:\n" + recieptsMap.get(recieptsMap.size()).toString();
     }
 
@@ -86,11 +89,13 @@ public class RecieptsServices {
     }
 
     public String changeNameToController(int id, String name) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
         changeRecieptName(id, name);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -108,11 +113,13 @@ public class RecieptsServices {
     }
 
     public String changeTimeToController(int id, int time) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
         changeRecieptCookingTime(id, time);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -168,11 +175,13 @@ public class RecieptsServices {
     }
 
     public String addIngridientToController(int id, int index) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
         addIngridient(id, index);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -220,6 +229,7 @@ public class RecieptsServices {
     }
 
     public String deleteIngridientInController(int id, int number) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -228,6 +238,7 @@ public class RecieptsServices {
         }
         deleteIngridient(id, number);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -277,11 +288,13 @@ public class RecieptsServices {
     }
 
     public String addInstructionToController(int id, String instr) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
         addInstruction(id, instr);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -315,6 +328,7 @@ public class RecieptsServices {
     }
 
     public String deleteInstructionInController(int id, int number) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -323,6 +337,7 @@ public class RecieptsServices {
         }
         deleteInstruction(id, number);
         System.out.println(recieptsMap.get(id));
+        saveToFile();
         return "Рецепт изменен:\n" + recieptsMap.get(id).toString();
     }
 
@@ -333,6 +348,7 @@ public class RecieptsServices {
     }
 
     public String searchInController(int id) {
+        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -342,6 +358,7 @@ public class RecieptsServices {
     }
 
     public String list() {
+        readFromFile();
         if (recieptsMap.isEmpty()) {
             return "Рецептов нет";
         }
@@ -349,6 +366,7 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s) {
+        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -368,6 +386,7 @@ public class RecieptsServices {
     }
 
     public String searchingIngByIdToController(int id) {
+        readFromFile();
         if (ingridientServices.getIngridient(id) == null) {
             return "По такому id ингридиента нет";
         }
@@ -385,6 +404,7 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2) {
+        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -404,6 +424,7 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2, String s3) {
+        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -424,9 +445,13 @@ public class RecieptsServices {
 
     private void saveToFile() {
         try {
+            fileService.classType = 1;
             String string = new ObjectMapper().writeValueAsString(recieptsMap);
-            fileService.saveToFile(string);
-            System.out.println("Карта рецептов успешно сохранена");
+            boolean b = fileService.saveToFile(string);
+            if (b) {System.out.println("Карта рецептов успешно сохранена");}
+            else {
+                System.out.println("Не удалось сохранить карту рецептов в файл");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -434,6 +459,7 @@ public class RecieptsServices {
 
     private void readFromFile() {
         try {
+            fileService.classType = 1;
             String string = fileService.readFile();
             recieptsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Reciept >>(){});
         } catch (IOException e) {throw new RuntimeException(e);}
