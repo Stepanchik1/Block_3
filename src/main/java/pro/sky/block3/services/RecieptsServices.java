@@ -1,5 +1,7 @@
 package pro.sky.block3.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.sky.block3.Block3Application;
@@ -8,6 +10,7 @@ import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -18,12 +21,15 @@ public class RecieptsServices {
 
     private static int rcount = 0;
 
-    private final LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
 
     private final IngridientServices ingridientServices;
 
-    public RecieptsServices(IngridientServices ingridientServices) {
+    private final FileService fileService;
+
+    public RecieptsServices(IngridientServices ingridientServices, FileService fileService) {
         this.ingridientServices = ingridientServices;
+        this.fileService = fileService;
     }
 
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
@@ -414,6 +420,23 @@ public class RecieptsServices {
             return "Рецепты не найдены";
         }
         return al.toString().replace("{", "").replace("}", "").replace("=", ") ");
+    }
+
+    private void saveToFile() {
+        try {
+            String string = new ObjectMapper().writeValueAsString(recieptsMap);
+            fileService.saveToFile(string);
+            System.out.println("Карта рецептов успешно сохранена");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readFromFile() {
+        try {
+            String string = fileService.readFile();
+            recieptsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Reciept >>(){});
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
 }
 

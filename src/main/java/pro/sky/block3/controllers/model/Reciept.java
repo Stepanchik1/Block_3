@@ -2,11 +2,13 @@ package pro.sky.block3.controllers.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Reciept {
     private String name;
