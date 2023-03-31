@@ -30,9 +30,13 @@ public class RecieptsServices {
 
     public RecieptsServices(IngridientServices ingridientServices, FileService fileService) {
         this.ingridientServices = ingridientServices;
-        this.fileService = fileService;
+        this.fileService = fileService;readFromFile();
     }
 
+    @PostConstruct
+    void first() {
+        readFromFile();
+    }
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
@@ -69,7 +73,6 @@ public class RecieptsServices {
     }
 
     public String createRecieptInController(String name, int time, int id, String inst) {
-        readFromFile();
         createReciept(name, time, id, inst);
         System.out.println(recieptsMap.get(recieptsMap.size()).toString());
         saveToFile();
@@ -89,7 +92,6 @@ public class RecieptsServices {
     }
 
     public String changeNameToController(int id, String name) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -113,7 +115,6 @@ public class RecieptsServices {
     }
 
     public String changeTimeToController(int id, int time) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -175,7 +176,6 @@ public class RecieptsServices {
     }
 
     public String addIngridientToController(int id, int index) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -229,7 +229,6 @@ public class RecieptsServices {
     }
 
     public String deleteIngridientInController(int id, int number) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -288,7 +287,6 @@ public class RecieptsServices {
     }
 
     public String addInstructionToController(int id, String instr) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -328,7 +326,6 @@ public class RecieptsServices {
     }
 
     public String deleteInstructionInController(int id, int number) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -348,7 +345,6 @@ public class RecieptsServices {
     }
 
     public String searchInController(int id) {
-        readFromFile();
         if (recieptsMap.get(id) == null) {
             return "По такому id рецептов не найдено";
         }
@@ -358,7 +354,6 @@ public class RecieptsServices {
     }
 
     public String list() {
-        readFromFile();
         if (recieptsMap.isEmpty()) {
             return "Рецептов нет";
         }
@@ -366,7 +361,6 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s) {
-        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -386,7 +380,6 @@ public class RecieptsServices {
     }
 
     public String searchingIngByIdToController(int id) {
-        readFromFile();
         if (ingridientServices.getIngridient(id) == null) {
             return "По такому id ингридиента нет";
         }
@@ -404,7 +397,6 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2) {
-        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }
@@ -424,7 +416,6 @@ public class RecieptsServices {
     }
 
     public String searchReciept(String s1, String s2, String s3) {
-        readFromFile();
         if (this.recieptsMap == null || this.recieptsMap.isEmpty()) {
             return "Список рецептов пуст";
         }

@@ -31,17 +31,6 @@ public class RecieptsController {
         this.ingridientServices = ingridientServices;
     }
 
-    @PostConstruct
-    void first() {Ingridient[] ingridients = new Ingridient[]{ingridientServices.getIngridient(3), ingridientServices.getIngridient(4)};
-        ArrayList<Ingridient> ing = new ArrayList<>();
-        ing.add(ingridientServices.getIngridient(1));
-        ing.add(ingridientServices.getIngridient(2));
-        ing.add(ingridientServices.getIngridient(3));
-        String[] strings = {"a", "b", "c"};
-        recieptsServices.createReciept("пробный рецепт", 23, ing, strings);
-        recieptsServices.createReciept("пробный рецепт №2", 5, 3, "Приготовить и съесть");
-        recieptsServices.createReciept("пробный рецепт №3", 11, quickCast(ingridients), "Подавиться");}
-
     @GetMapping("/create")
     @Operation (summary = "Создание рецепта", description = "Создается по названию, времени приготовления, одному ингридиенту и одной инструкции. Остальные ингридиентыи инструкции надо добавлять потом")
     @ApiResponses (value = {

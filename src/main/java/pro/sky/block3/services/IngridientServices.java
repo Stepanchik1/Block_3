@@ -23,6 +23,10 @@ public class IngridientServices {
     public IngridientServices(FileService fileService) {
         this.fileService = fileService;
     }
+@PostConstruct
+    void first() {
+        readFromFile();
+    }
 
     public void createIngridient(String name, double count, String unit) {
         Ingridient ingridient = new Ingridient(count, name, unit);
@@ -31,7 +35,6 @@ public class IngridientServices {
     }
 
     public String createInController(String name, double count, String unit) {
-        readFromFile();
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
@@ -49,7 +52,6 @@ public class IngridientServices {
     }
 
     public String changeInController(int id, String name, double count, String unit) {
-        readFromFile();
         if (name == null || count == 0 || unit == null) {
             return "Укажите все поля ингридиента";
         }
@@ -71,7 +73,6 @@ public class IngridientServices {
     }
 
     public String deleteInController(int id) {
-        readFromFile();
         if (ingridientsMap.get(id) == null) {
             return "Ингридиента по данному id нет";
         }
@@ -90,7 +91,6 @@ public class IngridientServices {
         }
     }
     public Ingridient getIngridient (int id) {
-        readFromFile();
         if (ingridientsMap.get(id) != null) {
             return ingridientsMap.get(id);
         } else {
@@ -101,7 +101,6 @@ public class IngridientServices {
 
 
     public String searchInController(int id) {
-        readFromFile();
         if (ingridientsMap.get(id) == null) {
             return "Ингридиента по данному id нет";
         }
@@ -127,7 +126,6 @@ public class IngridientServices {
     }
 
     public String list() {
-        readFromFile();
         if (ingridientsMap.isEmpty()) {
             return "Ингридиентов нет";
         }

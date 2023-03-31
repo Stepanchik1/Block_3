@@ -21,7 +21,7 @@ public class FileService {
     @PostConstruct
     private Path path () {return Path.of(dataFilePath, classType(classType)+dataName);}
 
-    byte classType=0;
+    byte classType=1;
 
 private String classType (byte classType) {
     System.out.println(classType);

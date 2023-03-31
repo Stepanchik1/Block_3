@@ -29,13 +29,7 @@ public class IngridientsController {
         this.ingridientServices = ingridientServices;
     }
 
-    @PostConstruct
-            void first() {
-        ingridientServices.createIngridient("яйца", 2, "шт.");
-        ingridientServices.createIngridient("молоко", 0.5, "л.");
-        ingridientServices.createIngridient("курица", 200, "гр.");
-        ingridientServices.createIngridient("соль", 1, "по вкусу");
-    }
+
     @GetMapping("/create")
     @Operation(summary = "Создание ингридиента", description = "Создается по наименованию продукта, количеству и единице измерения")
     @ApiResponses(value = {
