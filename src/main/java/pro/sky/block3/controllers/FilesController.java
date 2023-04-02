@@ -2,6 +2,8 @@ package pro.sky.block3.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +41,7 @@ private final FileService fileService;
         File file = fileService.getFile(classType);
         if (!file.exists()) {return ResponseEntity.noContent().build();}
         else {InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-            return ResponseEntity.ok().contentLength(file.length()).body(resource);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filemame =\"lululu\"").contentLength(file.length()).body(resource); //не сработало название файла
         }
     }
 }
