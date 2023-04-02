@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 @Service
 public class IngridientServices {
 
-    private static int icount = 0;
+    private final byte CLASSTYPE = 0;
 
     private LinkedHashMap<Integer, Ingridient> ingridientsMap = new LinkedHashMap<>();
 
@@ -30,7 +30,7 @@ public class IngridientServices {
 
     public void createIngridient(String name, double count, String unit) {
         Ingridient ingridient = new Ingridient(count, name, unit);
-        ingridient.setId(++icount);
+        ingridient.setId(ingridientsMap.size()+1);
         ingridientsMap.put(ingridient.getId(), ingridient);
     }
 
@@ -134,9 +134,8 @@ public class IngridientServices {
 
     private void saveToFile() {
         try {
-            fileService.classType = 0;
             String string = new ObjectMapper().writeValueAsString(ingridientsMap);
-            boolean b = fileService.saveToFile(string);
+            boolean b = fileService.saveToFile(string, CLASSTYPE);
             if (b) {System.out.println("Карта ингридиентов успешно сохранена");}
             else {
                 System.out.println("Не удалось сохранить карту ингридиентов в файл");
@@ -148,8 +147,7 @@ public class IngridientServices {
 
     private void readFromFile() {
         try {
-            fileService.classType = 0;
-            String string = fileService.readFile();
+            String string = fileService.readFile(CLASSTYPE);
             ingridientsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Ingridient>>(){});
         } catch (IOException e) {throw new RuntimeException(e);}
     }

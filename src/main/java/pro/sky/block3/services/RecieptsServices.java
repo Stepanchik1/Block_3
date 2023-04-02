@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class RecieptsServices {
 
-    private static int rcount = 0;
-
     private LinkedHashMap<Integer, Reciept> recieptsMap = new LinkedHashMap<>();
 
     private final IngridientServices ingridientServices;
 
     private final FileService fileService;
+
+    private final byte CLASSTYPE = 1;
 
     public RecieptsServices(IngridientServices ingridientServices, FileService fileService) {
         this.ingridientServices = ingridientServices;
@@ -42,7 +42,7 @@ public class RecieptsServices {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        Reciept reciept = new Reciept(name, time, list, instructions, ++rcount);
+        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size()+1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -52,7 +52,7 @@ public class RecieptsServices {
             return;
         }
         String[] instructions = new String[]{instruction};
-        Reciept reciept = new Reciept(name, time, list, instructions, ++rcount);
+        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size()+1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -68,7 +68,7 @@ public class RecieptsServices {
         String[] instructions = new String[]{instruction};
         ArrayList<Ingridient> ingridients = new ArrayList<>();
         ingridients.add(ingridientServices.getIngridient(iding));
-        Reciept reciept = new Reciept(name, time, ingridients, instructions, ++rcount);
+        Reciept reciept = new Reciept(name, time, ingridients, instructions, recieptsMap.size()+1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -436,9 +436,8 @@ public class RecieptsServices {
 
     private void saveToFile() {
         try {
-            fileService.classType = 1;
             String string = new ObjectMapper().writeValueAsString(recieptsMap);
-            boolean b = fileService.saveToFile(string);
+            boolean b = fileService.saveToFile(string, CLASSTYPE);
             if (b) {System.out.println("Карта рецептов успешно сохранена");}
             else {
                 System.out.println("Не удалось сохранить карту рецептов в файл");
@@ -450,8 +449,7 @@ public class RecieptsServices {
 
     private void readFromFile() {
         try {
-            fileService.classType = 1;
-            String string = fileService.readFile();
+            String string = fileService.readFile(CLASSTYPE);
             recieptsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Reciept >>(){});
         } catch (IOException e) {throw new RuntimeException(e);}
     }

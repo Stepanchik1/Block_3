@@ -18,10 +18,7 @@ public class FileService {
     @Value("${name.of.data.file}")
     private String dataName;
 
-    @PostConstruct
-    private Path path () {return Path.of(dataFilePath, classType(classType)+dataName);}
-
-    byte classType=1;
+    private Path path (byte classType) {return Path.of(dataFilePath, classType(classType)+dataName);}
 
 private String classType (byte classType) {
     System.out.println(classType);
@@ -29,26 +26,26 @@ private String classType (byte classType) {
         return "reciepts";} else if (classType == 0){return "ingridients";} else {return "";}
 }
 
-    public boolean saveToFile(String json) {
+    public boolean saveToFile(String json, byte classType) {
         try {
-            cleanFile();
-            Files.writeString(path(), json);
+            cleanFile(classType);
+            Files.writeString(path(classType), json);
             return true;
         } catch (IOException e) {
             return false;
         }
     }
 
-    public String readFile() {
+    public String readFile(byte classType) {
         try {
-            return Files.readString(path());
+            return Files.readString(path(classType));
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
-    private boolean cleanFile() {
+    private boolean cleanFile(byte classType) {
         try {
-            Files.deleteIfExists(path());
-            Files.createFile(path());
+            Files.deleteIfExists(path(classType));
+            Files.createFile(path(classType));
             return true;
         } catch (IOException e) {
             return false;
