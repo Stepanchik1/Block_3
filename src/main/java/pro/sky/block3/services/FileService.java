@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,9 @@ private String classType (byte classType) {
         }
     }
 
+    public File getFile(byte classType) {
+        return new File (dataFilePath + "/"+classType(classType)+dataName);
+    }
     public String readFile(byte classType) {
         try {
             return Files.readString(path(classType));
@@ -50,6 +54,5 @@ private String classType (byte classType) {
         } catch (IOException e) {
             return false;
         }
-
     }
 }
