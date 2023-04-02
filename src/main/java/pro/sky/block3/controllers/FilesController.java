@@ -41,7 +41,7 @@ private final FileService fileService;
         File file = fileService.getFile(classType);
         if (!file.exists()) {return ResponseEntity.noContent().build();}
         else {InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filemame =\"lululu\"").contentLength(file.length()).body(resource); //не сработало название файла
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filemame =\"lululu.json\"").contentLength(file.length()).body(resource); //не сработало название файла
         }
     }
 }
