@@ -10,8 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.block3.services.FileService;
+import pro.sky.block3.services.IngridientServices;
+import pro.sky.block3.services.RecieptsServices;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/files")
@@ -20,8 +24,16 @@ public class FilesController {
 
     private final FileService fileService;
 
-    public FilesController(FileService fileService) {
+    private final RecieptsServices recieptsServices;
+
+    private final IngridientServices ingridientServices;
+
+    public FilesController(FileService fileService, RecieptsServices recieptsServices, IngridientServices ingridientServices) {
         this.fileService = fileService;
+        this.recieptsServices = recieptsServices;
+        this.ingridientServices = ingridientServices;
+        System.out.println(recieptsServices.toTextMap());
+        System.out.println(ingridientServices.toTextMap());
     }
 
     @GetMapping("/export/reciepts")
@@ -74,5 +86,30 @@ return importFile((byte) 1, file);
     @PostMapping(value = "/import/ingridients", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> importFileOfIngridients(@RequestParam MultipartFile file) {
         return importFile((byte) 0, file);
+    }
+
+    @GetMapping("/text/reciepts")
+    public ResponseEntity<Object> getTextFileOfReciepts () {
+try {
+    Path path = fileService.writeToFileReciepts(recieptsServices.toTextMap());
+    if (Files.size(path) == 0) {return ResponseEntity.noContent().build();}
+    InputStreamResource resource = new InputStreamResource(new FileInputStream (path.toFile()));
+    return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).contentLength(Files.size(path)).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filemame =\"ahahaha.text\"").body(resource);
+} catch (IOException e) {
+    e.printStackTrace();
+    return ResponseEntity.internalServerError().body(e.toString());
+}
+    }
+    @GetMapping("/text/ingridients")
+    public ResponseEntity<Object> getTextFileOfIngridients () {
+        try {
+            Path path = fileService.writeToFileIngridients(ingridientServices.toTextMap());
+            if (Files.size(path) == 0) {return ResponseEntity.noContent().build();}
+            InputStreamResource resource = new InputStreamResource(new FileInputStream (path.toFile()));
+            return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).contentLength(Files.size(path)).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filemame =\"hohohoho.text\"").body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
     }
 }

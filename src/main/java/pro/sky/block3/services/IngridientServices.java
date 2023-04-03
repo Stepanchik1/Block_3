@@ -152,4 +152,32 @@ public class IngridientServices {
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
+    public String toText (Ingridient ingridient) {
+        return ingridient.getName()+" - "+ingridient.getCount()+" "+ingridient.getUnit();
+    }
+    public String toText (LinkedHashMap <Integer,Ingridient> map) {
+        String text = "";
+        int count = 0;
+        if (map.isEmpty()) {}
+        for (Ingridient ingridient : map.values()) {
+            count++;
+            text = text+count+") "+toText(ingridient)+"\n";
+        }
+        return text;
+    }
+
+    public String toText (ArrayList<Ingridient> list) {
+        String text = "";
+        int count = 0;
+        if (!list.isEmpty()) {
+        for (Ingridient ingridient : list) {
+            count++;
+            text = text+count+") "+toText(ingridient)+"\n";
+        }}
+        return text;
+    }
+
+    public String toTextMap () {
+        return toText(ingridientsMap);
+    }
 }

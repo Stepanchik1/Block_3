@@ -230,5 +230,4 @@ public class RecieptsController {
     public static ArrayList<Ingridient> quickCast(Ingridient[] ingridients) {
         return (ArrayList<Ingridient>) Arrays.stream(ingridients).collect(Collectors.toList());
     }
-
 }

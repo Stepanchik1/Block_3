@@ -3,18 +3,20 @@ package pro.sky.block3.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import pro.sky.block3.Block3Application;
-import pro.sky.block3.controllers.IngridientsController;
 import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.controllers.model.Reciept;
 
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,19 +32,20 @@ public class RecieptsServices {
 
     public RecieptsServices(IngridientServices ingridientServices, FileService fileService) {
         this.ingridientServices = ingridientServices;
-        this.fileService = fileService;readFromFile();
+        this.fileService = fileService;
     }
 
     @PostConstruct
     void first() {
         readFromFile();
     }
+
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {
         if (name == null || list == null || instructions == null) {
             System.out.println("Все поля рецепта должны быть полностью заполнены");
             return;
         }
-        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size()+1);
+        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size() + 1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -52,7 +55,7 @@ public class RecieptsServices {
             return;
         }
         String[] instructions = new String[]{instruction};
-        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size()+1);
+        Reciept reciept = new Reciept(name, time, list, instructions, recieptsMap.size() + 1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -68,7 +71,7 @@ public class RecieptsServices {
         String[] instructions = new String[]{instruction};
         ArrayList<Ingridient> ingridients = new ArrayList<>();
         ingridients.add(ingridientServices.getIngridient(iding));
-        Reciept reciept = new Reciept(name, time, ingridients, instructions, recieptsMap.size()+1);
+        Reciept reciept = new Reciept(name, time, ingridients, instructions, recieptsMap.size() + 1);
         recieptsMap.put(reciept.getId(), reciept);
     }
 
@@ -438,8 +441,9 @@ public class RecieptsServices {
         try {
             String string = new ObjectMapper().writeValueAsString(recieptsMap);
             boolean b = fileService.saveToFile(string, CLASSTYPE);
-            if (b) {System.out.println("Карта рецептов успешно сохранена");}
-            else {
+            if (b) {
+                System.out.println("Карта рецептов успешно сохранена");
+            } else {
                 System.out.println("Не удалось сохранить карту рецептов в файл");
             }
         } catch (IOException e) {
@@ -450,11 +454,44 @@ public class RecieptsServices {
     private void readFromFile() {
         try {
             String string = fileService.readFile(CLASSTYPE);
-            recieptsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Reciept >>(){});
-        } catch (IOException e) {throw new RuntimeException(e);}
+            recieptsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap<Integer, Reciept>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String instructionsToText (Reciept reciept) {
+        String string = "";
+        int count = 0;
+        if (reciept.getInstructions()!=null) {
+            for (String instruction : reciept.getInstructions()) {
+                count++;
+                string = string+count+") "+instruction+"\n";
+            }
+        }
+        return string;
+    }
+
+    public String toText (Reciept reciept) {
+        return reciept.getName() + ".\nВремя приготовления - " + reciept.getCookingTime() + " минут.\nИнгридиенты:\n"+ingridientServices.toText(reciept.getIngridients())+"Инструкции:\n"+instructionsToText(reciept);
+    }
+
+    public String toText (LinkedHashMap <Integer, Reciept> map) {
+        String text = "";
+        int count = 0;
+        if (map.isEmpty()) {}
+        for (Reciept reciept : map.values()) {
+            count++;
+            text = text+count+") "+toText(reciept)+"\n";
+        }
+        return text;
+    }
+
+    public String toTextMap () {
+        return toText(recieptsMap);
     }
 }
-
 
 
 
