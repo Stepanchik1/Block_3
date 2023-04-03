@@ -21,11 +21,11 @@ public class FileService {
 
     private Path path (byte classType) {return Path.of(dataFilePath, classType(classType)+dataName);}
 
-private String classType (byte classType) {
-    System.out.println(classType);
+    private String classType (byte classType) {
+        System.out.println(classType);
         if (classType == 1) {
-        return "reciepts";} else if (classType == 0){return "ingridients";} else {return "";}
-}
+            return "reciepts";} else if (classType == 0){return "ingridients";} else {return "";}
+    }
 
     public boolean saveToFile(String json, byte classType) {
         try {
@@ -37,16 +37,17 @@ private String classType (byte classType) {
         }
     }
 
-    public File getFile(byte classType) {
+    public File getNewFile(byte classType) {
         return new File (dataFilePath + "/"+classType(classType)+dataName);
     }
-    public String readFile(byte classType) {
+    public String readFile(byte classType) throws IOException {
         try {
             return Files.readString(path(classType));
-        } catch (IOException e) {throw new RuntimeException(e);}
+        } catch (IOException e) {System.out.println(e.getMessage());}
+        return null;
     }
 
-    private boolean cleanFile(byte classType) {
+    public boolean cleanFile(byte classType) {
         try {
             Files.deleteIfExists(path(classType));
             Files.createFile(path(classType));
