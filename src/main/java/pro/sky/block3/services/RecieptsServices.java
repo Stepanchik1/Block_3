@@ -37,7 +37,8 @@ public class RecieptsServices {
 
     @PostConstruct
     void first() {
-        readFromFile();
+        if (fileService.isFileExist(CLASSTYPE)) {
+        readFromFile();}
     }
 
     public void createReciept(String name, int time, ArrayList<Ingridient> list, String[] instructions) {

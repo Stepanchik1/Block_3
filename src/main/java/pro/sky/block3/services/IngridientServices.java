@@ -25,7 +25,8 @@ public class IngridientServices {
     }
 @PostConstruct
     void first() {
-        readFromFile();
+    if (fileService.isFileExist(CLASSTYPE)) {
+        readFromFile();}
     }
 
     public void createIngridient(String name, double count, String unit) {

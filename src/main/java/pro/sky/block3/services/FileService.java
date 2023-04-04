@@ -63,6 +63,10 @@ public class FileService {
         return null;
     }
 
+    public boolean isFileExist (byte classType) {
+           return Files.exists(path(classType));
+    }
+
     public boolean cleanFile(byte classType) {
         try {
             Files.deleteIfExists(path(classType));
