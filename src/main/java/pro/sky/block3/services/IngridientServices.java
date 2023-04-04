@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 @Service
 public class IngridientServices {
 
-    private static int icount = 0;
+    private final byte CLASSTYPE = 0;
 
     private LinkedHashMap<Integer, Ingridient> ingridientsMap = new LinkedHashMap<>();
 
@@ -25,12 +25,13 @@ public class IngridientServices {
     }
 @PostConstruct
     void first() {
-        readFromFile();
+    if (fileService.isFileExist(CLASSTYPE)) {
+        readFromFile();}
     }
 
     public void createIngridient(String name, double count, String unit) {
         Ingridient ingridient = new Ingridient(count, name, unit);
-        ingridient.setId(++icount);
+        ingridient.setId(ingridientsMap.size()+1);
         ingridientsMap.put(ingridient.getId(), ingridient);
     }
 
@@ -134,9 +135,8 @@ public class IngridientServices {
 
     private void saveToFile() {
         try {
-            fileService.classType = 0;
             String string = new ObjectMapper().writeValueAsString(ingridientsMap);
-            boolean b = fileService.saveToFile(string);
+            boolean b = fileService.saveToFile(string, CLASSTYPE);
             if (b) {System.out.println("Карта ингридиентов успешно сохранена");}
             else {
                 System.out.println("Не удалось сохранить карту ингридиентов в файл");
@@ -148,10 +148,37 @@ public class IngridientServices {
 
     private void readFromFile() {
         try {
-            fileService.classType = 0;
-            String string = fileService.readFile();
+            String string = fileService.readFile(CLASSTYPE);
             ingridientsMap = new ObjectMapper().readValue(string, new TypeReference<LinkedHashMap < Integer, Ingridient>>(){});
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
+    public String toText (Ingridient ingridient) {
+        return ingridient.getName()+" - "+ingridient.getCount()+" "+ingridient.getUnit();
+    }
+    public String toText (LinkedHashMap <Integer,Ingridient> map) {
+        String text = "";
+        int count = 0;
+        if (map.isEmpty()) {}
+        for (Ingridient ingridient : map.values()) {
+            count++;
+            text = text+count+") "+toText(ingridient)+"\n";
+        }
+        return text;
+    }
+
+    public String toText (ArrayList<Ingridient> list) {
+        String text = "";
+        int count = 0;
+        if (!list.isEmpty()) {
+        for (Ingridient ingridient : list) {
+            count++;
+            text = text+count+") "+toText(ingridient)+"\n";
+        }}
+        return text;
+    }
+
+    public String toTextMap () {
+        return toText(ingridientsMap);
+    }
 }
