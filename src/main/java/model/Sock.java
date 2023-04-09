@@ -6,9 +6,26 @@ public class Sock {
 private Size size;
 private Color color;
 
-    enum Size {S, M, L, XL, XXL, XXXL}
+    public enum Size {S ("S"), M ("M"), L ("L"), XL ("XL"), XXL ("XXL"), XXXL ("XXXL");
+        String size;
 
-    enum Color {Black, White, Blue, Grey, Brown, Ocher}
+        Size(String size) {
+            this.size = size;
+        }
+    }
+
+    public enum Color {Black ("черный"), White ("белый"), Blue ("синий"), Grey ("серый"), Brown ("коричневый"), Ocher ("охра");
+        String color;
+
+        Color(String color) {
+            this.color = color;
+        }
+
+        @Override
+        public String toString() {
+            return this.color;
+        }
+    }
 
     public Sock(int cottonPart, int quantity, Size size, Color color) {
         this.cottonPart = cottonPart;
@@ -35,5 +52,14 @@ private Color color;
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+    @Override
+    public String toString() {
+        return
+                "\nсодержание хлопка - " + cottonPart +
+                "%, \n" +
+                "размер - " + size +
+                "\nцвет - " + color +
+                "\nколичество - "+ quantity + "шт.";
     }
 }
