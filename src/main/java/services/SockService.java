@@ -62,5 +62,10 @@ public class SockService {
 
     }
 
+    public String showSocks () {
+        if (socksList.isEmpty()) {return "На складе не обнаружено ни одного носка";} else {
+        return socksList.toString();}
+    }
+
 
 }

@@ -1,7 +1,7 @@
 package controllers;
 
 
-import jakarta.annotation.PostConstruct;
+
 import model.Sock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,5 +32,10 @@ public class SockController {
     public ResponseEntity <String> addSocks (@RequestBody Sock sock) {
 String string = sockService.addSocks(sock);
         return ResponseEntity.ok().body(string);
+    }
+
+    @GetMapping ("/show")
+    public ResponseEntity <String> showSocks () {
+        return ResponseEntity.ok().body(sockService.showSocks());
     }
 }
