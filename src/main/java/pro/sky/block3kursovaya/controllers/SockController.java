@@ -42,7 +42,7 @@ public class SockController {
     @PutMapping("/release")
     public ResponseEntity<Sock> putSocks(@RequestParam int cotton, @RequestParam String color, @RequestParam String size, @RequestParam int count) {
         Sock sock = sockService.checkSock(color, size, cotton);
-        if (sockService.canPut(sock, count)) {
+        if (sockService.can(sock, count)) {
             System.out.println(sockService.putSocks(sock, count));
             return ResponseEntity.ok().body(new Sock(cotton, count, sock.getSize(), sock.getColor()));
         } else {
@@ -50,6 +50,20 @@ public class SockController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @DeleteMapping ("/delete")
+    public ResponseEntity<String> deleteSocks(@RequestParam int cotton, @RequestParam String color, @RequestParam String size, @RequestParam int count) {
+        Sock sock = sockService.checkSock(color, size, cotton);
+        String answer = sockService.deleteSocks(sock, count);
+        System.out.println(answer);
+        if (sockService.can(sock, count)) {
+            return ResponseEntity.ok().body(answer);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
 }
 
 

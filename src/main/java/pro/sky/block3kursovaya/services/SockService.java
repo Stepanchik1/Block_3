@@ -109,7 +109,7 @@ public class SockService {
         return null;
     }
 
-    public boolean canPut(Sock sock, int count) {
+    public boolean can(Sock sock, int count) {
         if (sock == null) {
             return false;
         }
@@ -133,6 +133,14 @@ public class SockService {
             sock.setQuantity(sock.getQuantity() - count);
             return "Из партии:" + demosock + "Отпустили " + count + " носков. Осталось - " + sock.getQuantity() + "шт.\n";
         }
+    }
+
+    public String deleteSocks (Sock sock, int count) {
+        String answer = putSocks(sock, count);
+        if (answer.contains("отпускаемого")) {answer = answer.replace("отпускаемого", "удаляемого");}
+        if (answer.contains("отпустить")) {answer = answer.replace("отпустить", "удалить");}
+        if (answer.contains("Отпустили")) {answer = answer.replace("Отпустили", "Удалено");}
+        return answer;
     }
 }
 
