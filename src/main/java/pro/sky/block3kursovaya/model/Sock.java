@@ -1,4 +1,4 @@
-package model;
+package pro.sky.block3kursovaya.model;
 
 public class Sock {
    private int cottonPart;
@@ -11,6 +11,11 @@ private Color color;
 
         Size(String size) {
             this.size = size;
+        }
+
+        @Override
+        public String toString() {
+            return size;
         }
     }
 
@@ -60,6 +65,6 @@ private Color color;
                 "%, \n" +
                 "размер - " + size +
                 "\nцвет - " + color +
-                "\nколичество - "+ quantity + "шт.";
+                "\nколичество - "+ quantity + "шт.\n";
     }
 }

@@ -1,4 +1,4 @@
-package services;
+package pro.sky.block3kursovaya.services;
 
 
 import lombok.NoArgsConstructor;
