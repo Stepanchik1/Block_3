@@ -3,75 +3,60 @@ package pro.sky.block3.controllers;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.block3.Block3Application;
 import pro.sky.block3.controllers.model.Ingridient;
 import pro.sky.block3.services.IngridientServices;
 import pro.sky.block3.services.RecieptsServices;
 
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/ingridients")
 
 public class IngridientsController {
+
+    private final IngridientServices ingridientServices;
+
+    public IngridientsController(IngridientServices ingridientServices) {
+        this.ingridientServices = ingridientServices;
+    }
+
+    @PostConstruct
+            void first() {
+        ingridientServices.createIngridient("яйца", 2, "шт.");
+        ingridientServices.createIngridient("молоко", 0.5, "л.");
+        ingridientServices.createIngridient("курица", 200, "гр.");
+        ingridientServices.createIngridient("соль", 1, "по вкусу");
+    }
     @GetMapping("/create")
-    public static String createIng(String name, double count, String unit) {
-        if (name == null || count == 0 || unit == null) {
-            return "Укажите все поля ингридиента";
-        }
-        IngridientServices ingridientServices = new IngridientServices();
-        ingridientServices.createIngridient(name, count, unit);
-        System.out.println(IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()));
-        return IngridientServices.getIngridientsMap().get(IngridientServices.getIngridientsMap().size()).toString();
+    public String createIng(String name, double count, String unit) {
+        return ingridientServices.createInController(name, count, unit);
     }
 
     @GetMapping("/change")
-    public static String changeIng(int id, String name, double count, String unit) {
-        if (name == null || count == 0 || unit == null) {
-            return "Укажите все поля ингридиента";
-        }
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        IngridientServices ingridientServices = new IngridientServices();
-        ingridientServices.changeIngridient(id, name, count, unit);
-        System.out.println(IngridientServices.getIngridientsMap().get(id));
-        return "Ингридиент изменен: " + IngridientServices.getIngridientsMap().get(id).toString();
+    public String changeIng(int id, String name, double count, String unit) {
+        return ingridientServices.changeInController(id, name, count, unit);
     }
 
     @GetMapping("/delete")
-    public static String deleteIng(int id) {
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        Ingridient ingridient = IngridientServices.getIngridientsMap().get(id);
-        IngridientServices ingridientServices = new IngridientServices();
-        ingridientServices.deleteIngridient(id);
-        System.out.println(ingridient + " = " + IngridientServices.getIngridientsMap().get(id));
-        return "Ингридиент удален: " + ingridient;
+    public String deleteIng(int id) {
+        return ingridientServices.deleteInController(id);
     }
 
     @GetMapping("/search/id")
-    public static String searchIngId(int id) {
-        if (IngridientServices.getIngridientsMap().get(id) == null) {
-            return "Ингридиента по данному id нет";
-        }
-        IngridientServices ingridientServices = new IngridientServices();
-        ingridientServices.searchIngridient(id);
-        return "Найден ингридиент: " + IngridientServices.getIngridientsMap().get(id);
+    public String searchIngId(int id) {
+        return ingridientServices.searchInController(id);
     }
 
     @GetMapping("/search")
-    public static String searchIngridient (String string) {
-        IngridientServices ingridientServices = new IngridientServices();
-        return ingridientServices.searchIngridient(string);
+    public String searchIngridient(String string) {
+        return this.ingridientServices.searchIngridient(string);
     }
 
     @GetMapping("/list")
-    public static String listOfIng() {
-        if (IngridientServices.getIngridientsMap().isEmpty()) {
-            return "Ингридиентов нет";
-        }
-        return IngridientServices.getIngridientsMap().toString().replace("{", "").replace("}", "").replace("=", ") ");
+    public String listOfIng() {
+        return ingridientServices.list();
     }
 }
